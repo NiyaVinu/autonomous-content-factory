@@ -1,0 +1,105 @@
+.blog-container {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+}
+
+.blog-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.content-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.content-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.word-count {
+  background: rgba(255,255,255,0.2);
+  padding: 4px 8px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+.blog-content {
+  padding: 20px;
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.blog-title {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+  color: #333;
+  border-left: 4px solid #667eea;
+  padding-left: 12px;
+}
+
+.blog-text p {
+  margin-bottom: 16px;
+  line-height: 1.6;
+  color: #555;
+}
+
+.blog-text h2 {
+  margin: 20px 0 10px;
+  font-size: 1.3rem;
+  color: #444;
+}
+
+.blog-text ul, .blog-text ol {
+  margin: 10px 0 20px 20px;
+}
+
+.blog-text li {
+  margin: 5px 0;
+  line-height: 1.5;
+}
+
+.content-meta {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.style-badge {
+  display: inline-block;
+  background: #f0f0f0;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.content-actions {
+  padding: 16px;
+  background: #f8f9fa;
+  border-top: 1px solid #e0e0e0;
+}
+
+.copy-btn {
+  width: 100%;
+  padding: 8px;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.copy-btn:hover {
+  background: #5a67d8;
+}
