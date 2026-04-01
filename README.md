@@ -13,6 +13,18 @@ This project is an AI-powered system that automatically converts a single source
 - AI APIs
 
 ## How to Run
-1. Install dependencies
-2. Run backend
-3. Run frontend using `npm run dev`
+
+### 1. Clone the repository
+git clone https://github.com/NiyaVinu/autonomous-content-factory.git
+
+### 2. Install dependencies
+cd frontend
+npm install
+
+### 3. Run frontend
+npm run dev
+
+### 4. Run backend (if created)
+cd ../backend
+npm install
+node server.js
