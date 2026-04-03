@@ -1,65 +1,59 @@
-import React from 'react';
-import './SocialDisplay.css';
+import { useState } from 'react'
+import { formatSocial } from '../utils/formatters'
+import './socialDisplay.css'
 
-function SocialDisplay({ social }) {
-  if (!social) return null;
+export default function SocialDisplay({ content }) {
+  const [copied, setCopied] = useState(false)
 
-  const thread = social.thread || [];
-  const formattedThread = social.formatted_thread;
+  if (!content) return <div className="display-empty">— Social thread will appear here —</div>
+
+  const posts = formatSocial(content)
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(content)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   return (
-    <div className="social-container">
-      <div className="content-header">
-        <h3>🐦 Social Media Thread</h3>
-        <span className="tweet-count">{thread.length || 5} tweets</span>
-      </div>
-      
-      <div className="social-content">
-        {thread.length > 0 ? (
-          <div className="thread-container">
-            {thread.map((tweet, index) => (
-              <div key={index} className="tweet-card">
-                <div className="tweet-header">
-                  <span className="tweet-number">{index + 1}/{thread.length}</span>
-                  <span className="tweet-icon">🐦</span>
-                </div>
-                <div className="tweet-content">{tweet}</div>
-              </div>
-            ))}
-          </div>
-        ) : formattedThread ? (
-          <div className="thread-text">
-            {formattedThread.split('\n\n').map((tweet, index) => (
-              <div key={index} className="tweet-card">
-                <div className="tweet-content">{tweet}</div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>No social media content available</p>
-        )}
-        
-        {social.style && (
-          <div className="content-meta">
-            <span className="style-badge">Style: {social.style}</span>
-          </div>
-        )}
-      </div>
-      
-      <div className="content-actions">
-        <button 
-          className="copy-btn"
-          onClick={() => {
-            const text = thread.join('\n\n') || formattedThread;
-            navigator.clipboard.writeText(text);
-            alert('Copied to clipboard!');
-          }}
-        >
-          📋 Copy Thread
+    <div className="social-display">
+      <div className="sd-topbar">
+        <div className="sd-tags">
+          <span className="tag tag--blue">SOCIAL THREAD</span>
+          <span className="tag tag--dim">PUNCHY TONE</span>
+          <span className="tag tag--dim">{posts.length} POSTS</span>
+        </div>
+        <button className="copy-btn" onClick={handleCopy}>
+          {copied ? '✓ Copied' : '⎘ Copy'}
         </button>
       </div>
-    </div>
-  );
-}
 
-export default SocialDisplay;
+      <div className="sd-card">
+        {posts.map((post, i) => (
+          <div key={i} className="sd-post">
+            <div className="sd-left">
+              <div className="sd-avatar">
+                <span>CF</span>
+              </div>
+              {i < posts.length - 1 && <div className="sd-line" />}
+            </div>
+
+            <div className="sd-right">
+              <div className="sd-meta">
+                <span className="sd-name">Content Factory</span>
+                <span className="sd-handle">@contentfactory</span>
+                <span className="sd-counter">{i + 1}/{posts.length}</span>
+              </div>
+              <p className="sd-text">{post}</p>
+              <div className="sd-actions">
+                <span className="sd-action">↩ Reply</span>
+                <span className="sd-action">↺ Repost</span>
+                <span className="sd-action">♡ Like</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}

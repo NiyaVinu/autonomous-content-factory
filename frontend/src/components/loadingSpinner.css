@@ -15,3 +15,8 @@
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.ls-wrap { display: flex; align-items: center; gap: 10px; }
+.ls-ring { width: 14px; height: 14px; border: 2px solid var(--border-md); border-top-color: var(--amber); border-radius: 50%; animation: ls-spin 0.65s linear infinite; }
+.ls-label { font-family: var(--fm); font-size: 11px; color: var(--text-3); letter-spacing: 0.05em; }
+@keyframes ls-spin { to { transform: rotate(360deg); } }

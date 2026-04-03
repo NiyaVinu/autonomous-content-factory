@@ -160,25 +160,20 @@ The Team
    * Enhance content with formatting
    */
   enhanceContent(content, type) {
-    let enhanced = content;
-    
-    // Add proper punctuation
-    enhanced = enhanced.replace(/\s+\./g, '.');
-    enhanced = enhanced.replace(/\s+,/g, ',');
-    
-    // Ensure proper spacing after periods
-    enhanced = enhanced.replace(/\.([A-Z])/g, '. $1');
-    
-    // Capitalize first letter
-    enhanced = enhanced.charAt(0).toUpperCase() + enhanced.slice(1);
-    
-    // Add appropriate line breaks
-    if (type === 'email') {
-      enhanced = enhanced.replace(/\n/g, '\n\n');
-    }
-    
-    return enhanced;
-  }
+  let enhanced = content;
+
+  // Fix punctuation spacing
+  enhanced = enhanced.replace(/\s+\./g, '.');
+  enhanced = enhanced.replace(/\s+,/g, ',');
+
+  // Ensure proper spacing after periods (but not after numbers like 80%)
+  enhanced = enhanced.replace(/\.([A-Z])/g, '. $1');
+
+  // Capitalize first letter
+  enhanced = enhanced.charAt(0).toUpperCase() + enhanced.slice(1);
+
+  return enhanced;
+}
 }
 
 module.exports = new ContentHelpers();

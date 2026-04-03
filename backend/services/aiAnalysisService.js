@@ -49,42 +49,33 @@ class AIAnalysisService {
    * Uses pattern matching and common naming conventions
    */
   extractProductName(text) {
-    // Common product name indicators
-    const patterns = [
-      /(?:product|solution|platform|software|called)\s+["']?([A-Z][a-z0-9\s]+?)(?:["']|\s+is|\s+was|\s+helps)/i,
-      /introducing\s+["']?([A-Z][a-z0-9\s]+?)["']?/i,
-      /announcing\s+["']?([A-Z][a-z0-9\s]+?)["']?/i,
-      /meet\s+["']?([A-Z][a-z0-9\s]+?)["']?/i
-    ];
-    
-    for (const pattern of patterns) {
-      const match = text.match(pattern);
-      if (match && match[1]) {
-        return match[1].trim();
-      }
+  // Look for "launching X", "introducing X", "called X", "named X"
+  const patterns = [
+    /(?:launching|introducing|announcing|meet|called|named)\s+["']?([A-Z][a-zA-Z0-9]+)["']?/i,
+    /(?:We're|We are)\s+launching\s+([A-Z][a-zA-Z0-9]+)/i,
+    /([A-Z][a-zA-Z0-9]+)\s+(?:is\s+)?(?:an?\s+)?(?:AI-powered|platform|solution|software|tool|app)/i,
+  ];
+
+  for (const pattern of patterns) {
+    const match = text.match(pattern);
+    if (match && match[1] && match[1].length > 2) {
+      return match[1].trim();
     }
-    
-    // If no product name found, extract the first proper noun phrase
-    const words = text.split(/\s+/);
-    for (let i = 0; i < Math.min(words.length, 10); i++) {
-      if (words[i].charAt(0) === words[i].charAt(0).toUpperCase() && 
-          words[i].length > 2 &&
-          !['The', 'This', 'That', 'These', 'Those'].includes(words[i])) {
-        // Check if it's a proper noun (product name candidate)
-        let productName = words[i];
-        let j = i + 1;
-        while (j < words.length && words[j].charAt(0) === words[j].charAt(0).toUpperCase()) {
-          productName += ' ' + words[j];
-          j++;
-        }
-        if (productName.split(' ').length >= 2) {
-          return productName;
-        }
-      }
-    }
-    
-    return "Unnamed Product";
   }
+
+  // Fallback: find capitalized word in first sentence
+  const firstSentence = text.split('.')[0];
+  const words = firstSentence.split(/\s+/);
+  for (const word of words) {
+    const clean = word.replace(/[^a-zA-Z0-9]/g, '');
+    if (clean.length > 3 && clean[0] === clean[0].toUpperCase() &&
+        !['We', 'The', 'This', 'Our', 'An', 'A', 'It'].includes(clean)) {
+      return clean;
+    }
+  }
+
+  return "Unnamed Product";
+}
   
   /**
    * Extract key features from the text

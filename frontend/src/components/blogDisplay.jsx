@@ -1,54 +1,45 @@
-import React from 'react';
-import './BlogDisplay.css';
+import { useState } from 'react'
+import { formatBlog } from '../utils/formatters'
+import './blogDisplay.css'
 
-function BlogDisplay({ blog }) {
-  if (!blog) return null;
+export default function BlogDisplay({ content }) {
+  const [copied, setCopied] = useState(false)
+
+  if (!content) return <div className="display-empty">— Blog post will appear here —</div>
+
+  const { title, body, wordCount } = formatBlog(content)
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(content)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   return (
-    <div className="blog-container">
-      <div className="content-header">
-        <h3>📖 Blog Post</h3>
-        {blog.word_count && (
-          <span className="word-count">{blog.word_count} words</span>
-        )}
-      </div>
-      
-      <div className="blog-content">
-        <h2 className="blog-title">{blog.title || 'Blog Post'}</h2>
-        
-        {blog.plain_text ? (
-          <div className="blog-text">
-            {blog.plain_text.split('\n').map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))}
-          </div>
-        ) : blog.content ? (
-          <div dangerouslySetInnerHTML={{ __html: blog.content }} />
-        ) : (
-          <p>No content available</p>
-        )}
-        
-        {blog.style && (
-          <div className="content-meta">
-            <span className="style-badge">Style: {blog.style}</span>
-          </div>
-        )}
-      </div>
-      
-      <div className="content-actions">
-        <button 
-          className="copy-btn"
-          onClick={() => {
-            const text = blog.plain_text || blog.content?.replace(/<[^>]*>/g, '');
-            navigator.clipboard.writeText(text);
-            alert('Copied to clipboard!');
-          }}
-        >
-          📋 Copy to Clipboard
+    <div className="blog-display">
+      <div className="bd-topbar">
+        <div className="bd-tags">
+          <span className="tag tag--amber">BLOG POST</span>
+          <span className="tag tag--dim">PROFESSIONAL TONE</span>
+          {wordCount && <span className="tag tag--dim">{wordCount} WORDS</span>}
+        </div>
+        <button className="copy-btn" onClick={handleCopy}>
+          {copied ? '✓ Copied' : '⎘ Copy'}
         </button>
       </div>
-    </div>
-  );
-}
 
-export default BlogDisplay;
+      <div className="bd-card">
+        {title && (
+          <div className="bd-title-block">
+            <h2 className="bd-title">{title}</h2>
+            <div className="bd-title-rule" />
+          </div>
+        )}
+        <div 
+  className="bd-body"
+  dangerouslySetInnerHTML={{ __html: body.join('\n') }}
+/>
+      </div>
+    </div>
+  )
+}

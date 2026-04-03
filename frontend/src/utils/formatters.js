@@ -171,3 +171,44 @@ export default {
   extractHashtags,
   formatSocialPost
 };
+
+export function formatBlog(content) {
+  if (!content || typeof content !== 'string') {
+    return { title: '', body: [], wordCount: 0 };
+  }
+
+  const lines = content.split('\n').map(l => l.trim()).filter(l => l !== '');
+
+  let title = '';
+  let bodyLines = [];
+
+  if (lines[0]?.startsWith('# ')) {
+    title = lines[0].replace(/^#\s*/, '');
+    bodyLines = lines.slice(1);
+  } else {
+    bodyLines = lines;
+  }
+
+  const wordCount = countWords(content);
+
+  return { title, body: bodyLines, wordCount };
+}
+
+export function formatSocial(content) {
+  if (!content || typeof content !== 'string') return [];
+
+  // Split by numbered tweets like "1.", "2." or by double newlines
+  const byNumbered = content.split(/\n(?=\d+[\.\)])/);
+
+  if (byNumbered.length > 1) {
+    return byNumbered
+      .map(p => p.replace(/^\d+[\.\)]\s*/, '').trim())
+      .filter(p => p.length > 0);
+  }
+
+  // Fallback: split by double newlines
+  return content
+    .split(/\n\n+/)
+    .map(p => p.replace(/\n/g, ' ').trim())
+    .filter(p => p.length > 0);
+}

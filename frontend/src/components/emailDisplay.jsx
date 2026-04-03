@@ -1,64 +1,79 @@
-import React from 'react';
-import './EmailDisplay.css';
+import { useState } from 'react'
+import './emailDisplay.css'
 
-function EmailDisplay({ email }) {
-  if (!email) return null;
+export default function EmailDisplay({ content }) {
+  const [copied, setCopied] = useState(false)
+
+  if (!content) return <div className="display-empty">— Email teaser will appear here —</div>
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(content)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+
+  const wordCount = content.split(/\s+/).filter(Boolean).length
 
   return (
-    <div className="email-container">
-      <div className="content-header">
-        <h3>📧 Email Teaser</h3>
-        {email.word_count && (
-          <span className="word-count">{email.word_count} words</span>
-        )}
-      </div>
-      
-      <div className="email-content">
-        {email.subject && (
-          <div className="email-subject">
-            <strong>Subject:</strong> {email.subject}
-          </div>
-        )}
-        
-        {email.preview_text && (
-          <div className="email-preview">
-            <strong>Preview:</strong> {email.preview_text}
-          </div>
-        )}
-        
-        <div className="email-body">
-          {email.body ? (
-            email.body.split('\n').map((paragraph, index) => (
-              <p key={index}>{paragraph}</p>
-            ))
-          ) : email.formatted_email ? (
-            <p>{email.formatted_email}</p>
-          ) : (
-            <p>No email content available</p>
-          )}
+    <div className="email-display">
+      <div className="em-topbar">
+        <div className="em-tags">
+          <span className="tag tag--teal">EMAIL TEASER</span>
+          <span className="tag tag--dim">WARM DIRECT TONE</span>
+          <span className="tag tag--dim">{wordCount} WORDS</span>
         </div>
-        
-        {email.style && (
-          <div className="content-meta">
-            <span className="style-badge">Style: {email.style}</span>
-          </div>
-        )}
-      </div>
-      
-      <div className="content-actions">
-        <button 
-          className="copy-btn"
-          onClick={() => {
-            const text = email.body || email.formatted_email;
-            navigator.clipboard.writeText(text);
-            alert('Copied to clipboard!');
-          }}
-        >
-          📋 Copy Email
+        <button className="copy-btn" onClick={handleCopy}>
+          {copied ? '✓ Copied' : '⎘ Copy'}
         </button>
       </div>
-    </div>
-  );
-}
 
-export default EmailDisplay;
+      <div className="em-card">
+        {/* chrome bar */}
+        <div className="em-chrome">
+          <div className="em-chrome-dots">
+            <span className="em-dot em-dot--red" />
+            <span className="em-dot em-dot--amber" />
+            <span className="em-dot em-dot--green" />
+          </div>
+          <span className="em-chrome-title">New Message — Mail</span>
+          <div style={{ flex: 1 }} />
+        </div>
+
+        {/* fields */}
+        <div className="em-fields">
+          <div className="em-field">
+            <span className="em-field-key">To</span>
+            <span className="em-field-val">subscribers@yourlist.com</span>
+          </div>
+          <div className="em-field">
+            <span className="em-field-key">From</span>
+            <span className="em-field-val">hello@yourproduct.com</span>
+          </div>
+          <div className="em-field em-field--subject">
+            <span className="em-field-key">Subject</span>
+            <span className="em-field-val em-subject">You need to see what we just built →</span>
+          </div>
+        </div>
+
+        {/* body */}
+        <div className="em-body">
+          <p className="em-greeting">Hi there,</p>
+          <div className="em-text">
+  {content.split('\n').map((line, i) => (
+    <p key={i} style={{ margin: '0 0 8px 0', minHeight: line ? 'auto' : '8px' }}>
+      {line}
+    </p>
+  ))}
+</div>
+          <div className="em-cta-block">
+            <span className="em-cta">See it in action →</span>
+          </div>
+          <div className="em-sig">
+            <span className="em-sig-name">The Team</span>
+            <span className="em-sig-company">Content Factory</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}

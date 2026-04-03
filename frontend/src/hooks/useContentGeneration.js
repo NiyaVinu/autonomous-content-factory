@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { runFullPipeline } from '../services/api';
 
-/**
- * Custom hook for managing content generation state and logic
- */
 function useContentGeneration() {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState('Idle');
@@ -12,9 +9,6 @@ function useContentGeneration() {
   const [error, setError] = useState(null);
   const [review, setReview] = useState(null);
 
-  /**
-   * Add a log entry with timestamp
-   */
   const addLog = (message) => {
     setLogs(prev => [...prev, {
       timestamp: new Date(),
@@ -22,9 +16,6 @@ function useContentGeneration() {
     }]);
   };
 
-  /**
-   * Clear all state
-   */
   const clearState = () => {
     setContent(null);
     setError(null);
@@ -32,23 +23,17 @@ function useContentGeneration() {
     setLogs([]);
   };
 
-  /**
-   * Generate content from input text
-   */
   const generateContent = async (text) => {
     setLoading(true);
     setStatus('Analyzing...');
     clearState();
     
     try {
-      // Add initial log
       addLog('🚀 Starting content generation pipeline...');
       
-      // Run the full pipeline with progress updates
       const result = await runFullPipeline(text, (message, stage) => {
         addLog(message);
         
-        // Update status based on stage
         switch(stage) {
           case 'analysis':
             setStatus('Analyzing source content...');
@@ -67,10 +52,14 @@ function useContentGeneration() {
       if (result.success) {
         addLog('✅ Content generation completed successfully!');
         setStatus('Completed');
-        setContent(result.content);
+        setContent({
+          blog: result.content?.blog_post?.content || '',
+          social: result.content?.social_media_thread?.formatted_thread || '',
+          email: result.content?.email_teaser?.body || '',
+          factSheet: result.analysis
+        });
         setReview(result.review);
         
-        // Add review summary to logs
         if (result.review && result.review.status) {
           addLog(`📊 Review Status: ${result.review.status}`);
           if (result.review.summary) {

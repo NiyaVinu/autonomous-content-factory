@@ -1,12 +1,10 @@
-import React from 'react';
-import './LoadingSpinner.css';
+import './loadingSpinner.css'
 
-function LoadingSpinner() {
+export default function LoadingSpinner({ label = 'Processing…' }) {
   return (
-    <div className="spinner-container">
-      <div className="spinner"></div>
+    <div className="ls-wrap">
+      <div className="ls-ring" />
+      <span className="ls-label">{label}</span>
     </div>
-  );
+  )
 }
-
-export default LoadingSpinner;
