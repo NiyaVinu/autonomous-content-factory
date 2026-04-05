@@ -33,7 +33,7 @@ class AIAnalysisService {
       product_name: productName,
       features: features,
       target_audience: targetAudience,
-      value_proposition: valueProposition,
+      value_proposition: valueProposition.replace(/(\d+)\s*%/g, '$1%'),
       ambiguous_points: ambiguousPoints,
       metadata: {
         word_count: this.getWordCount(text),
@@ -233,7 +233,7 @@ class AIAnalysisService {
     ];
     
     // Look for sentences containing these indicators
-    const sentences = text.split(/[.!?]+/);
+    const sentences = text.match(/[^.!?]+[.!?]+/g) || text.split(/[.!?]+/);
     let bestProposition = "";
     let bestScore = 0;
     

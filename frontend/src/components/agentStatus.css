@@ -191,3 +191,29 @@
 @media (max-width: 600px) {
   .as-grid { grid-template-columns: 1fr; }
 }
+
+/* 3-column grid for 3 agents */
+.as-grid--3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+/* Blue accent for editor agent */
+.as-card--running.as-card--blue {
+  border-color: var(--blue-mid);
+  background: linear-gradient(135deg, rgba(77,159,255,0.06) 0%, var(--bg-2) 60%);
+}
+
+.as-card--blue .as-role { color: var(--blue); }
+.as-card--running.as-card--blue .as-num { color: var(--blue); }
+.as-card--blue .as-pulse { background: var(--blue); }
+.as-card--blue .as-progress-fill { background: var(--blue); box-shadow: 0 0 8px var(--blue); }
+
+.as-card--blue .as-state--running {
+  background: var(--blue-dim);
+  color: var(--blue);
+  border: 1px solid var(--blue-mid);
+}
+
+@media (max-width: 768px) {
+  .as-grid--3 { grid-template-columns: 1fr; }
+}

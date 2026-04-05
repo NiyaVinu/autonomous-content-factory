@@ -3,6 +3,7 @@ import './emailDisplay.css'
 
 export default function EmailDisplay({ content }) {
   const [copied, setCopied] = useState(false)
+  const [ctaUrl, setCtaUrl] = useState('')
 
   if (!content) return <div className="display-empty">— Email teaser will appear here —</div>
 
@@ -28,7 +29,6 @@ export default function EmailDisplay({ content }) {
       </div>
 
       <div className="em-card">
-        {/* chrome bar */}
         <div className="em-chrome">
           <div className="em-chrome-dots">
             <span className="em-dot em-dot--red" />
@@ -39,7 +39,6 @@ export default function EmailDisplay({ content }) {
           <div style={{ flex: 1 }} />
         </div>
 
-        {/* fields */}
         <div className="em-fields">
           <div className="em-field">
             <span className="em-field-key">To</span>
@@ -53,20 +52,42 @@ export default function EmailDisplay({ content }) {
             <span className="em-field-key">Subject</span>
             <span className="em-field-val em-subject">You need to see what we just built →</span>
           </div>
+          <div className="em-field">
+            <span className="em-field-key">CTA URL</span>
+            <input
+              className="em-url-input"
+              type="text"
+              placeholder="https://yourproduct.com/demo"
+              value={ctaUrl}
+              onChange={(e) => setCtaUrl(e.target.value)}
+            />
+          </div>
         </div>
 
-        {/* body */}
         <div className="em-body">
           <p className="em-greeting">Hi there,</p>
           <div className="em-text">
-  {content.split('\n').map((line, i) => (
-    <p key={i} style={{ margin: '0 0 8px 0', minHeight: line ? 'auto' : '8px' }}>
-      {line}
-    </p>
-  ))}
-</div>
+            {content.split('\n').map((line, i) => (
+              <p key={i} style={{ margin: '0 0 8px 0', minHeight: line ? 'auto' : '8px' }}>
+                {line}
+              </p>
+            ))}
+          </div>
           <div className="em-cta-block">
-            <span className="em-cta">See it in action →</span>
+            {ctaUrl ? (
+              <a
+                className="em-cta"
+                href={ctaUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                See it in action →
+              </a>
+            ) : (
+              <span className="em-cta" style={{ opacity: 0.5, cursor: 'default' }}>
+                See it in action → (enter URL above)
+              </span>
+            )}
           </div>
           <div className="em-sig">
             <span className="em-sig-name">The Team</span>

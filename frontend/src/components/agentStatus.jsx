@@ -15,6 +15,13 @@ const AGENTS = {
     desc: 'Reads Fact-Sheet · Writes Blog, Social Thread & Email · Enforces tone per platform',
     accent: 'amber',
   },
+  editor: {
+    number: '03',
+    label: 'Editor-in-Chief',
+    role: 'The Gatekeeper',
+    desc: 'Reviews drafts · Checks hallucinations · Audits tone · Approves or rejects content',
+    accent: 'blue',
+  },
 }
 
 export default function AgentStatus({ states = {} }) {
@@ -31,7 +38,7 @@ export default function AgentStatus({ states = {} }) {
         <span className="as-pct">{getProgress(states)}</span>
       </div>
 
-      <div className="as-grid">
+      <div className="as-grid as-grid--3">
         {Object.entries(AGENTS).map(([key, meta]) => {
           const state = states[key] || 'idle'
           return (

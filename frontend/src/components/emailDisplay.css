@@ -128,3 +128,19 @@
   .em-body { padding: 20px; }
   .em-field { padding: 9px 16px; }
 }
+
+.em-url-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.2);
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  width: 100%;
+  outline: none;
+  padding: 2px 0;
+}
+
+.em-url-input::placeholder {
+  opacity: 0.4;
+}
