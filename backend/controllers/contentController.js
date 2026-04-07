@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const fs = require('fs').promises;
 const path = require('path');
-const Researchagent = require('../Agents/researchAgent');
+const researchAgent = require('../Agents/researchAgent');
 const copywriterAgent = require('../agents/copywriterAgent');
 const editorAgent = require('../agents/editorAgent');
 
