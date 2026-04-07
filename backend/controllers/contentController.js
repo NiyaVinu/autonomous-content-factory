@@ -2,8 +2,8 @@ const { v4: uuidv4 } = require('uuid');
 const fs = require('fs').promises;
 const path = require('path');
 const researchAgent = require('../Agents/researchAgent');
-const copywriterAgent = require('../agents/copywriterAgent');
-const editorAgent = require('../agents/editorAgent');
+const copywriterAgent = require('../Agents/copywriterAgent');
+const editorAgent = require('../Agents/editorAgent');
 
 // In-memory storage for jobs (in production, use a database)
 const jobs = new Map();
